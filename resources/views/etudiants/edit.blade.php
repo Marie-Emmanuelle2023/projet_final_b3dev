@@ -1,0 +1,28 @@
+<x-app-layout>
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold mb-6">Modifier l'étudiant</h1>
+        <form method="POST" action="{{ route('etudiants.update', $etudiant) }}" class="space-y-4">
+            @csrf
+            @method('PUT')
+            <div>
+                <label for="user_id" class="block font-semibold">Utilisateur</label>
+                <select name="user_id" id="user_id" class="w-full border rounded px-3 py-2" required>
+                    <option value="">-- Sélectionner --</option>
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}" @if(old('user_id', $etudiant->user_id) == $user->id) selected @endif>{{ $user->nom }} {{ $user->prenom }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="classe_id" class="block font-semibold">Classe</label>
+                <select name="classe_id" id="classe_id" class="w-full border rounded px-3 py-2" required>
+                    <option value="">-- Sélectionner --</option>
+                    @foreach($classes as $classe)
+                        <option value="{{ $classe->id }}" @if(old('classe_id', $etudiant->classe_id) == $classe->id) selected @endif>{{ $classe->nom }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Mettre à jour</button>
+        </form>
+    </div>
+</x-app-layout>

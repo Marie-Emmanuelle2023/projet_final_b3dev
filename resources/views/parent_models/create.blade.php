@@ -1,0 +1,18 @@
+<x-app-layout>
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold mb-6">Ajouter un parent</h1>
+        <form method="POST" action="{{ route('parent_models.store') }}" class="space-y-4">
+            @csrf
+            <div>
+                <label for="user_id" class="block font-semibold">Utilisateur</label>
+                <select name="user_id" id="user_id" class="w-full border rounded px-3 py-2" required>
+                    <option value="">Sélectionner un utilisateur</option>
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->nom }} {{ $user->prenom }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Enregistrer</button>
+        </form>
+    </div>
+</x-app-layout>

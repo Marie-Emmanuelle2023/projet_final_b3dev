@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTypeCoursRequest;
-use App\Http\Requests\UpdateTypeCoursRequest;
+use Illuminate\Http\Request;
 use App\Models\TypeCours;
 
 class TypeCoursController extends Controller
@@ -13,7 +12,8 @@ class TypeCoursController extends Controller
      */
     public function index()
     {
-        //
+        $types = TypeCours::all();
+        return view('type_cours.index', compact('types'));
     }
 
     /**
@@ -21,15 +21,19 @@ class TypeCoursController extends Controller
      */
     public function create()
     {
-        //
+        return view('type_cours.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTypeCoursRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+        ]);
+        $typeCours = TypeCours::create($validated);
+        return redirect()->route('type_cours.index')->with('success', 'Type de cours créé avec succès.');
     }
 
     /**
@@ -37,7 +41,7 @@ class TypeCoursController extends Controller
      */
     public function show(TypeCours $typeCours)
     {
-        //
+        return view('type_cours.show', compact('typeCours'));
     }
 
     /**
@@ -45,15 +49,19 @@ class TypeCoursController extends Controller
      */
     public function edit(TypeCours $typeCours)
     {
-        //
+        return view('type_cours.edit', compact('typeCours'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTypeCoursRequest $request, TypeCours $typeCours)
+    public function update(Request $request, TypeCours $typeCours)
     {
-        //
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+        ]);
+        $typeCours->update($validated);
+        return redirect()->route('type_cours.index')->with('success', 'Type de cours modifié avec succès.');
     }
 
     /**
@@ -61,6 +69,7 @@ class TypeCoursController extends Controller
      */
     public function destroy(TypeCours $typeCours)
     {
-        //
+        $typeCours->delete();
+        return redirect()->route('type_cours.index')->with('success', 'Type de cours supprimé avec succès.');
     }
 }

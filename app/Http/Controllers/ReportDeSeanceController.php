@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreReportDeSeanceRequest;
 use App\Http\Requests\UpdateReportDeSeanceRequest;
 use App\Models\ReportDeSeance;
+use App\Models\Seance;
 
 class ReportDeSeanceController extends Controller
 {
@@ -13,7 +14,8 @@ class ReportDeSeanceController extends Controller
      */
     public function index()
     {
-        //
+        $reportDeSeances = ReportDeSeance::orderByDesc('date')->get();
+        return view('report_de_seances.index', compact('reportDeSeances'));
     }
 
     /**
@@ -21,7 +23,8 @@ class ReportDeSeanceController extends Controller
      */
     public function create()
     {
-        //
+        $seances = Seance::orderByDesc('date')->get();
+        return view('report_de_seances.create', compact('seances'));
     }
 
     /**
@@ -29,7 +32,13 @@ class ReportDeSeanceController extends Controller
      */
     public function store(StoreReportDeSeanceRequest $request)
     {
-        //
+        $validated = $request->validate([
+            'seance_reportee_id' => 'required|exists:seances,id',
+            'seance_report_id' => 'required|exists:seances,id|different:seance_reportee_id',
+            'date' => 'required|date',
+        ]);
+        ReportDeSeance::create($validated);
+        return redirect()->route('report_de_seances.index')->with('success', 'Report ajouté avec succès.');
     }
 
     /**
@@ -37,7 +46,7 @@ class ReportDeSeanceController extends Controller
      */
     public function show(ReportDeSeance $reportDeSeance)
     {
-        //
+        return view('report_de_seances.show', compact('reportDeSeance'));
     }
 
     /**
@@ -45,7 +54,8 @@ class ReportDeSeanceController extends Controller
      */
     public function edit(ReportDeSeance $reportDeSeance)
     {
-        //
+        $seances = Seance::orderByDesc('date')->get();
+        return view('report_de_seances.edit', compact('reportDeSeance', 'seances'));
     }
 
     /**
@@ -53,7 +63,13 @@ class ReportDeSeanceController extends Controller
      */
     public function update(UpdateReportDeSeanceRequest $request, ReportDeSeance $reportDeSeance)
     {
-        //
+        $validated = $request->validate([
+            'seance_reportee_id' => 'required|exists:seances,id',
+            'seance_report_id' => 'required|exists:seances,id|different:seance_reportee_id',
+            'date' => 'required|date',
+        ]);
+        $reportDeSeance->update($validated);
+        return redirect()->route('report_de_seances.index')->with('success', 'Report modifié avec succès.');
     }
 
     /**
@@ -61,6 +77,7 @@ class ReportDeSeanceController extends Controller
      */
     public function destroy(ReportDeSeance $reportDeSeance)
     {
-        //
+        $reportDeSeance->delete();
+        return redirect()->route('report_de_seances.index')->with('success', 'Report supprimé avec succès.');
     }
 }

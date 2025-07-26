@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProfesseurRequest;
-use App\Http\Requests\UpdateProfesseurRequest;
+use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Professeur;
 
 class ProfesseurController extends Controller
@@ -13,7 +13,8 @@ class ProfesseurController extends Controller
      */
     public function index()
     {
-        //
+        $professeurs = Professeur::with('user')->get();
+        return view('professeurs.index', compact('professeurs'));
     }
 
     /**
@@ -21,15 +22,20 @@ class ProfesseurController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        return view('professeurs.create', compact('users'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProfesseurRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+        Professeur::create($validated);
+        return redirect()->route('professeurs.index')->with('success', 'Professeur créé avec succès.');
     }
 
     /**
@@ -37,7 +43,7 @@ class ProfesseurController extends Controller
      */
     public function show(Professeur $professeur)
     {
-        //
+        return view('professeurs.show', compact('professeur'));
     }
 
     /**
@@ -45,15 +51,20 @@ class ProfesseurController extends Controller
      */
     public function edit(Professeur $professeur)
     {
-        //
+        $users = User::all();
+        return view('professeurs.edit', compact('professeur', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProfesseurRequest $request, Professeur $professeur)
+    public function update(Request $request, Professeur $professeur)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+        $professeur->update($validated);
+        return redirect()->route('professeurs.index')->with('success', 'Professeur modifié avec succès.');
     }
 
     /**
@@ -61,6 +72,7 @@ class ProfesseurController extends Controller
      */
     public function destroy(Professeur $professeur)
     {
-        //
+        $professeur->delete();
+        return redirect()->route('professeurs.index')->with('success', 'Professeur supprimé avec succès.');
     }
 }

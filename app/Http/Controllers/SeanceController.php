@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSeanceRequest;
 use App\Http\Requests\UpdateSeanceRequest;
 use App\Models\Seance;
+use App\Models\TypeCours;
+use App\Models\Classe;
+use App\Models\EmploiDuTemps;
+use App\Models\Module;
 
 class SeanceController extends Controller
 {
@@ -13,7 +17,8 @@ class SeanceController extends Controller
      */
     public function index()
     {
-        //
+        $seances = Seance::with(['typeCours', 'classe', 'emploiDuTemps', 'module'])->get();
+        return view('seances.index', compact('seances'));
     }
 
     /**
@@ -21,7 +26,11 @@ class SeanceController extends Controller
      */
     public function create()
     {
-        //
+        $typeCours = TypeCours::all();
+        $classes = Classe::all();
+        $emplois = EmploiDuTemps::all();
+        $modules = Module::all();
+        return view('seances.create', compact('typeCours', 'classes', 'emplois', 'modules'));
     }
 
     /**
@@ -29,7 +38,16 @@ class SeanceController extends Controller
      */
     public function store(StoreSeanceRequest $request)
     {
-        //
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'salle' => 'required|string|max:255',
+            'type_cours_id' => 'required|exists:type_cours,id',
+            'classe_id' => 'required|exists:classes,id',
+            'emploi_du_temps_id' => 'required|exists:emploi_du_temps,id',
+            'module_id' => 'required|exists:modules,id',
+        ]);
+        Seance::create($validated);
+        return redirect()->route('seances.index')->with('success', 'Séance créée avec succès.');
     }
 
     /**
@@ -37,7 +55,8 @@ class SeanceController extends Controller
      */
     public function show(Seance $seance)
     {
-        //
+        $seance->load(['typeCours', 'classe', 'emploiDuTemps', 'module']);
+        return view('seances.show', compact('seance'));
     }
 
     /**
@@ -45,7 +64,11 @@ class SeanceController extends Controller
      */
     public function edit(Seance $seance)
     {
-        //
+        $typeCours = TypeCours::all();
+        $classes = Classe::all();
+        $emplois = EmploiDuTemps::all();
+        $modules = Module::all();
+        return view('seances.edit', compact('seance', 'typeCours', 'classes', 'emplois', 'modules'));
     }
 
     /**
@@ -53,7 +76,16 @@ class SeanceController extends Controller
      */
     public function update(UpdateSeanceRequest $request, Seance $seance)
     {
-        //
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'salle' => 'required|string|max:255',
+            'type_cours_id' => 'required|exists:type_cours,id',
+            'classe_id' => 'required|exists:classes,id',
+            'emploi_du_temps_id' => 'required|exists:emploi_du_temps,id',
+            'module_id' => 'required|exists:modules,id',
+        ]);
+        $seance->update($validated);
+        return redirect()->route('seances.index')->with('success', 'Séance modifiée avec succès.');
     }
 
     /**
@@ -61,6 +93,7 @@ class SeanceController extends Controller
      */
     public function destroy(Seance $seance)
     {
-        //
+        $seance->delete();
+        return redirect()->route('seances.index')->with('success', 'Séance supprimée avec succès.');
     }
 }

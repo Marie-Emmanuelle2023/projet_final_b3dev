@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreModuleRequest;
-use App\Http\Requests\UpdateModuleRequest;
+use Illuminate\Http\Request;
 use App\Models\Module;
 
 class ModuleController extends Controller
@@ -13,7 +12,8 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        //
+        $modules = Module::all();
+        return view('modules.index', compact('modules'));
     }
 
     /**
@@ -21,15 +21,19 @@ class ModuleController extends Controller
      */
     public function create()
     {
-        //
+        return view('modules.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreModuleRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+        ]);
+        Module::create($validated);
+        return redirect()->route('modules.index')->with('success', 'Module créé avec succès.');
     }
 
     /**
@@ -37,7 +41,7 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-        //
+        return view('modules.show', compact('module'));
     }
 
     /**
@@ -45,15 +49,19 @@ class ModuleController extends Controller
      */
     public function edit(Module $module)
     {
-        //
+        return view('modules.edit', compact('module'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateModuleRequest $request, Module $module)
+    public function update(Request $request, Module $module)
     {
-        //
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+        ]);
+        $module->update($validated);
+        return redirect()->route('modules.index')->with('success', 'Module modifié avec succès.');
     }
 
     /**
@@ -61,6 +69,7 @@ class ModuleController extends Controller
      */
     public function destroy(Module $module)
     {
-        //
+        $module->delete();
+        return redirect()->route('modules.index')->with('success', 'Module supprimé avec succès.');
     }
 }

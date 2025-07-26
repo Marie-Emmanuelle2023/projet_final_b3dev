@@ -12,6 +12,10 @@ class StatutSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+       \App\Models\Statut::insert([
+            ['libelle' => 'Présent'],
+            ['libelle' => 'Absent'],
+            ['libelle' => 'En retard'],
+        ]);
     }
 }

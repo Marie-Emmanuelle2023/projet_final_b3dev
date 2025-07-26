@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProfesseurModuleRequest;
-use App\Http\Requests\UpdateProfesseurModuleRequest;
+use Illuminate\Http\Request;
 use App\Models\ProfesseurModule;
+use App\Models\Professeur;
+use App\Models\Module;
 
 class ProfesseurModuleController extends Controller
 {
@@ -13,7 +14,8 @@ class ProfesseurModuleController extends Controller
      */
     public function index()
     {
-        //
+        $professeurModules = ProfesseurModule::with(['professeur.user', 'module'])->get();
+        return view('professeur_modules.index', compact('professeurModules'));
     }
 
     /**
@@ -21,15 +23,22 @@ class ProfesseurModuleController extends Controller
      */
     public function create()
     {
-        //
+        $professeurs = Professeur::with('user')->get();
+        $modules = Module::all();
+        return view('professeur_modules.create', compact('professeurs', 'modules'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProfesseurModuleRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'professeur_id' => 'required|exists:professeurs,id',
+            'module_id' => 'required|exists:modules,id',
+        ]);
+        ProfesseurModule::create($validated);
+        return redirect()->route('professeur_modules.index')->with('success', 'Affectation créée avec succès.');
     }
 
     /**
@@ -37,7 +46,8 @@ class ProfesseurModuleController extends Controller
      */
     public function show(ProfesseurModule $professeurModule)
     {
-        //
+        $professeurModule->load(['professeur.user', 'module']);
+        return view('professeur_modules.show', compact('professeurModule'));
     }
 
     /**
@@ -45,15 +55,22 @@ class ProfesseurModuleController extends Controller
      */
     public function edit(ProfesseurModule $professeurModule)
     {
-        //
+        $professeurs = Professeur::with('user')->get();
+        $modules = Module::all();
+        return view('professeur_modules.edit', compact('professeurModule', 'professeurs', 'modules'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProfesseurModuleRequest $request, ProfesseurModule $professeurModule)
+    public function update(Request $request, ProfesseurModule $professeurModule)
     {
-        //
+        $validated = $request->validate([
+            'professeur_id' => 'required|exists:professeurs,id',
+            'module_id' => 'required|exists:modules,id',
+        ]);
+        $professeurModule->update($validated);
+        return redirect()->route('professeur_modules.index')->with('success', 'Affectation modifiée avec succès.');
     }
 
     /**
@@ -61,6 +78,7 @@ class ProfesseurModuleController extends Controller
      */
     public function destroy(ProfesseurModule $professeurModule)
     {
-        //
+        $professeurModule->delete();
+        return redirect()->route('professeur_modules.index')->with('success', 'Affectation supprimée avec succès.');
     }
 }

@@ -11,11 +11,18 @@ class Niveau extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom'
+        'nom',
     ];
 
     public function classes()
     {
         return $this->hasMany(Classe::class);
+    }
+
+    public function coordinateurs()
+    {
+        return $this->belongsToMany(Coordinateur::class, 'coordinateur_niveau')
+            ->withPivot('annee_academique_id')
+            ->withTimestamps();
     }
 }

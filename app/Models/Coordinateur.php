@@ -11,11 +11,18 @@ class Coordinateur extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id'
+        'user_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function niveaux()
+    {
+        return $this->belongsToMany(Niveau::class, 'coordinateur_niveau')
+            ->withPivot('annee_academique_id')
+            ->withTimestamps();
     }
 }
