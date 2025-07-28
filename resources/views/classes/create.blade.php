@@ -2,6 +2,16 @@
     <div class="max-w-xl mx-auto mt-10 bg-white p-6 rounded shadow">
         <h2 class="text-2xl font-semibold mb-4">Ajouter une classe</h2>
 
+        @if ($errors->any())
+            <div class="bg-red-100 text-red-800 p-2 mb-4 rounded">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('classes.store') }}">
             @csrf
 

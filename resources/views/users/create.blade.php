@@ -39,7 +39,22 @@
                 <select name="role_id" id="role_id" required class="w-full border rounded px-3 py-2">
                     <option value="">-- Sélectionnez un rôle --</option>
                     @foreach ($roles as $role)
-                        <option value="{{ $role->id }}">{{ $role->libelle }}</option>
+                        <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                            {{ $role->libelle }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Classe (affiché uniquement si le rôle est étudiant) -->
+            <div class="mb-4" id="classe_field" style="display: none;">
+                <label for="classe_id" class="block text-gray-700">Classe</label>
+                <select name="classe_id" id="classe_id" class="w-full border rounded px-3 py-2">
+                    <option value="">-- Sélectionnez une classe --</option>
+                    @foreach ($classes as $classe)
+                        <option value="{{ $classe->id }}" {{ old('classe_id') == $classe->id ? 'selected' : '' }}>
+                            {{ $classe->nom }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -63,4 +78,19 @@
             @endif
         </form>
     </div>
+
+    <!-- Script pour afficher/masquer la classe -->
+    <script>
+        const roleSelect = document.getElementById('role_id');
+        const classeField = document.getElementById('classe_field');
+
+        function toggleClasseField() {
+            const selectedText = roleSelect.options[roleSelect.selectedIndex]?.text?.toLowerCase() || '';
+            classeField.style.display = selectedText === 'etudiant' ? 'block' : 'none';
+        }
+
+        roleSelect.addEventListener('change', toggleClasseField);
+        window.addEventListener('DOMContentLoaded', toggleClasseField); // initialise dès le chargement (utile en cas d'erreur old())
+    </script>
+
 </x-app-layout>

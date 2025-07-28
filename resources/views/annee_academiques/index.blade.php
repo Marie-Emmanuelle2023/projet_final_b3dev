@@ -38,6 +38,10 @@
             @endforeach
         </tbody>
     </table>
+    <div class= "flex justify-between items-center ">
+            <a href="{{ route('dashboard') }}" class="bg-blue-600 text-white px-4 py-2 rounded mt-4">Retour au
+                dashboard</a>
+        </div>
     <!-- Modal de confirmation -->
     <div id="deleteModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded shadow">

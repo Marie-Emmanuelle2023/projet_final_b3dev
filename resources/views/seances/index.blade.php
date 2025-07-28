@@ -7,6 +7,7 @@
                 <tr class="bg-gray-100 text-left">
                     <th class="border px-4 py-2">Date</th>
                     <th class="border px-4 py-2">Cours</th>
+                    <th class="border px-4 py-2">Professeur</th>
                     <th class="border px-4 py-2">Type</th>
                     <th class="border px-4 py-2">Classe</th>
                     <th class="border px-4 py-2">Emploi du temps</th>
@@ -22,17 +23,19 @@
                             @if(!empty($seance->module))
                                 {{ $seance->module->nom }}
                             @elseif(!empty($seance->typeCours))
-                                {{ $seance->typeCours->libelle }}
+                                {{ $seance->typeCours->nom }}
                             @else
                                 -
                             @endif
                         </td>
-                        <td class="border px-4 py-2">{{ $seance->typeCours->libelle ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $seance->professeur->user->nom ?? '-' }} {{ $seance->professeur->user->prenom ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $seance->typeCours->nom ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $seance->classe->nom ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $seance->emploiDuTemps->id ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $seance->salle }}</td>
                         <td class="border px-4 py-2">
                             <a href="{{ route('seances.show', $seance) }}" class="btn btn-info btn-sm">Voir</a>
+                            <a href="{{ route('presences.marquer', $seance) }}" class="btn btn-success btn-sm">Marquer la présence</a>
                             <a href="{{ route('seances.edit', $seance) }}" class="btn btn-warning btn-sm">Modifier</a>
                             <button data-modal-target="seance-modal-{{ $seance->id }}" data-modal-toggle="seance-modal-{{ $seance->id }}" class="btn btn-danger btn-sm" type="button">Supprimer</button>
                             <!-- Flowbite Modal -->
@@ -69,5 +72,9 @@
                 @endforelse
             </tbody>
         </table>
+        <div class= "flex justify-between items-center ">
+            <a href="{{ route('dashboard') }}" class="bg-blue-600 text-white px-4 py-2 rounded mt-4">Retour au
+                dashboard</a>
+        </div>
     </div>
 </x-app-layout>

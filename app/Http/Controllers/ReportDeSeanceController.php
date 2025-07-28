@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreReportDeSeanceRequest;
-use App\Http\Requests\UpdateReportDeSeanceRequest;
+use Illuminate\Http\Request;
 use App\Models\ReportDeSeance;
 use App\Models\Seance;
 
@@ -30,7 +29,7 @@ class ReportDeSeanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreReportDeSeanceRequest $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'seance_reportee_id' => 'required|exists:seances,id',
@@ -61,7 +60,7 @@ class ReportDeSeanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateReportDeSeanceRequest $request, ReportDeSeance $reportDeSeance)
+    public function update(Request $request, ReportDeSeance $reportDeSeance)
     {
         $validated = $request->validate([
             'seance_reportee_id' => 'required|exists:seances,id',

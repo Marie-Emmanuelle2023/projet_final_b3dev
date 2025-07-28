@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classe;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('users.create', compact('roles'));
+        $classes = Classe::all();
+        return view('users.create', compact('roles', 'classes'));
     }
 
     /**
@@ -33,7 +35,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-       $validated = $request->validate([
+        $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'identifiant' => 'required|string|unique:users,identifiant',
@@ -41,7 +43,18 @@ class UserController extends Controller
             'role_id' => 'required|exists:roles,id',
             'photo' => 'nullable|image|max:2048',
         ]);
-        // Gestion de la photo
+
+        // Vérification si rôle est étudiant, et validation du champ classe_id
+        $roleEtudiant = Role::where('libelle', 'etudiant')->first();
+        if ($roleEtudiant && $validated['role_id'] == $roleEtudiant->id) {
+            $request->validate([
+                'classe_id' => 'required|exists:classes,id'
+            ]);
+            $classeId = $request->input('classe_id');
+        } else {
+            $classeId = null;
+        }
+
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('photos', 'public');
@@ -56,36 +69,28 @@ class UserController extends Controller
             'photo' => $photoPath,
         ]);
 
-        // Ajout automatique dans la table coordinateur si le rôle est coordinateur
+        // Créer automatiquement les rôles
         $roleCoordinateur = Role::where('libelle', 'coordinateur')->first();
         if ($roleCoordinateur && $validated['role_id'] == $roleCoordinateur->id) {
-            \App\Models\Coordinateur::create([
-                'user_id' => $user->id
-            ]);
+            \App\Models\Coordinateur::create(['user_id' => $user->id]);
         }
 
-        // Ajout automatique dans la table professeur si le rôle est professeur
         $roleProfesseur = Role::where('libelle', 'professeur')->first();
         if ($roleProfesseur && $validated['role_id'] == $roleProfesseur->id) {
-            \App\Models\Professeur::create([
-                'user_id' => $user->id
-            ]);
+            \App\Models\Professeur::create(['user_id' => $user->id]);
         }
 
-        // Ajout automatique dans la table etudiant si le rôle est etudiant
-        $roleEtudiant = Role::where('libelle', 'etudiant')->first();
-        if ($roleEtudiant && $validated['role_id'] == $roleEtudiant->id) {
+        if ($roleEtudiant && $validated['role_id'] == $roleEtudiant->id && $classeId) {
             \App\Models\Etudiant::create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'classe_id' => $classeId,
+                'is_dropped' => false
             ]);
         }
 
-        // Ajout automatique dans la table parentmodel si le rôle est parent
         $roleParent = Role::where('libelle', 'parent')->first();
         if ($roleParent && $validated['role_id'] == $roleParent->id) {
-            \App\Models\ParentModel::create([
-                'user_id' => $user->id
-            ]);
+            \App\Models\ParentModel::create(['user_id' => $user->id]);
         }
 
         return redirect()->route('users.index')->with('success', 'Utilisateur ajouté avec succès.');
@@ -130,19 +135,18 @@ class UserController extends Controller
             $user->photo = $request->file('photo')->store('photos', 'public');
         }
 
-         $user->update([
+        $user->update([
             'nom' => $validated['nom'],
             'prenom' => $validated['prenom'],
             'identifiant' => $validated['identifiant'],
             'role_id' => $validated['role_id'],
             'photo' => $user->photo ?? null,
         ]);
-         if ($validated['password']) {
+        if ($validated['password']) {
             $user->update(['password' => Hash::make($validated['password'])]);
         }
 
         return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour.');
-
     }
 
     /**
@@ -150,7 +154,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-         if ($user->photo) {
+        if ($user->photo) {
             Storage::disk('public')->delete($user->photo);
         }
 

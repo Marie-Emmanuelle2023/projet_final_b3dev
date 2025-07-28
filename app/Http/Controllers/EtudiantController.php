@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreEtudiantRequest;
-use App\Http\Requests\UpdateEtudiantRequest;
+use Illuminate\Http\Request;
 use App\Models\Classe;
 use App\Models\Etudiant;
 use App\Models\User;
@@ -32,7 +31,7 @@ class EtudiantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEtudiantRequest $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -65,7 +64,7 @@ class EtudiantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEtudiantRequest $request, Etudiant $etudiant)
+    public function update(Request $request, Etudiant $etudiant)
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',

@@ -12,6 +12,10 @@ class TypeCoursSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\TypeCours::insert([
+            ['nom' => 'Cours'],
+            ['nom' => 'Workshop'],
+            ['nom' => 'E-learning'],
+        ]);
     }
 }

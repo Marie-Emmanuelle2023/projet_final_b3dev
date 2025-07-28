@@ -38,7 +38,9 @@
                 @endforelse
             </tbody>
         </table>
-        <a href="{{ route('emploi_du_temps.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Retour à la liste</a>
-        <a href="{{ route('emploi_du_temps.edit', $emploiDuTemps) }}" class="ml-2 bg-yellow-500 text-white px-4 py-2 rounded">Modifier</a>
+        <div class="mt-8 flex gap-2">
+            <a href="{{ route('emploi_du_temps.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Retour à la liste</a>
+            <a href="{{ route('emploi_du_temps.edit', ['emploi_du_temp' => $emploiDuTemps->id]) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Modifier</a>
+        </div>
     </div>
 </x-app-layout>

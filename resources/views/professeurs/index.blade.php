@@ -65,5 +65,9 @@
                 @endforelse
             </tbody>
         </table>
+        <div class= "flex justify-between items-center ">
+            <a href="{{ route('dashboard') }}" class="bg-blue-600 text-white px-4 py-2 rounded mt-4">Retour au
+                dashboard</a>
+        </div>
     </div>
 </x-app-layout>

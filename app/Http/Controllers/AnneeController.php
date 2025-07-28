@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAnneeRequest;
-use App\Http\Requests\UpdateAnneeRequest;
 use App\Models\Annee;
 use Illuminate\Http\Request;
 

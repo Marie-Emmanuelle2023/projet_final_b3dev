@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreStatutRequest;
-use App\Http\Requests\UpdateStatutRequest;
+use Illuminate\Http\Request;
 use App\Models\Statut;
 
 class StatutController extends Controller
@@ -27,7 +26,7 @@ class StatutController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStatutRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -51,7 +50,7 @@ class StatutController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStatutRequest $request, Statut $statut)
+    public function update(Request $request, Statut $statut)
     {
         //
     }

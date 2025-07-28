@@ -10,6 +10,34 @@ use Illuminate\Http\Request;
 
 class PresenceController extends Controller
 {
+
+
+    public function marquerPresence(Seance $seance)
+    {
+        $etudiants = $seance->classe->etudiants;
+        $statuts = Statut::all();
+
+        return view('presences.marquer', compact('seance', 'etudiants', 'statuts'));
+    }
+
+    public function enregistrerPresence(Request $request, Seance $seance)
+    {
+        $request->validate([
+            'presences' => 'required|array',
+        ]);
+
+        foreach ($request->presences as $etudiant_id => $statut_id) {
+            Presence::updateOrCreate(
+                ['etudiant_id' => $etudiant_id, 'seance_id' => $seance->id],
+                ['statut_id' => $statut_id]
+            );
+        }
+
+        return redirect()->route('seances.index')->with('success', 'Présences enregistrées.');
+    }
+
+
+
     /**
      * Display a listing of the resource.
      */

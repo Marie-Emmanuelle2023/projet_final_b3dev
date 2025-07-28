@@ -13,7 +13,7 @@ class SeancePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return strtolower($user->role->libelle) === 'coordinateur';
     }
 
     /**
@@ -21,7 +21,7 @@ class SeancePolicy
      */
     public function view(User $user, Seance $seance): bool
     {
-        return false;
+        return strtolower($user->role->libelle) === 'coordinateur';
     }
 
     /**
@@ -29,7 +29,7 @@ class SeancePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return strtolower($user->role->libelle) === 'coordinateur';
     }
 
     /**
@@ -37,7 +37,7 @@ class SeancePolicy
      */
     public function update(User $user, Seance $seance): bool
     {
-        return false;
+        return strtolower($user->role->libelle) === 'coordinateur';
     }
 
     /**
@@ -45,7 +45,7 @@ class SeancePolicy
      */
     public function delete(User $user, Seance $seance): bool
     {
-        return false;
+        return strtolower($user->role->libelle) === 'coordinateur';
     }
 
     /**
@@ -53,7 +53,7 @@ class SeancePolicy
      */
     public function restore(User $user, Seance $seance): bool
     {
-        return false;
+        return strtolower($user->role->libelle) === 'coordinateur';
     }
 
     /**
@@ -61,6 +61,6 @@ class SeancePolicy
      */
     public function forceDelete(User $user, Seance $seance): bool
     {
-        return false;
+        return strtolower($user->role->libelle) === 'coordinateur';
     }
 }

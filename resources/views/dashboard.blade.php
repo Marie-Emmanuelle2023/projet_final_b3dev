@@ -30,7 +30,7 @@
             <!-- Menu Tableau de bord -->
             <div class="flex items-center gap-3 p-2 rounded-full bg-indigo-900 text-white w-full max-w-xs">
                 <div class="w-6 h-6 bg-white rounded"></div>
-                <span class="font-medium text-sm">Tableau de bord</span>
+                <span class="font-medium text-sm"><a href="{{ route('dashboard') }}">Tableau de bord</a></span>
             </div>
 
             <!-- Menu liens -->

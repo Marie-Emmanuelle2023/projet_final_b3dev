@@ -13,7 +13,7 @@ class EmploiDuTempsPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->role->libelle === 'coordinateur';
     }
 
     /**
@@ -21,7 +21,7 @@ class EmploiDuTempsPolicy
      */
     public function view(User $user, EmploiDuTemps $emploiDuTemps): bool
     {
-        return false;
+        return $user->role->libelle === 'coordinateur';
     }
 
     /**
@@ -29,7 +29,7 @@ class EmploiDuTempsPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role->libelle === 'coordinateur';
     }
 
     /**
@@ -37,7 +37,7 @@ class EmploiDuTempsPolicy
      */
     public function update(User $user, EmploiDuTemps $emploiDuTemps): bool
     {
-        return false;
+        return $user->role->libelle === 'coordinateur';
     }
 
     /**
@@ -45,7 +45,7 @@ class EmploiDuTempsPolicy
      */
     public function delete(User $user, EmploiDuTemps $emploiDuTemps): bool
     {
-        return false;
+        return $user->role->libelle === 'coordinateur';
     }
 
     /**
@@ -53,7 +53,7 @@ class EmploiDuTempsPolicy
      */
     public function restore(User $user, EmploiDuTemps $emploiDuTemps): bool
     {
-        return false;
+        return $user->role->libelle === 'coordinateur';
     }
 
     /**
@@ -61,6 +61,6 @@ class EmploiDuTempsPolicy
      */
     public function forceDelete(User $user, EmploiDuTemps $emploiDuTemps): bool
     {
-        return false;
+        return $user->role->libelle === 'coordinateur';
     }
 }

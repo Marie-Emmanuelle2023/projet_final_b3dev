@@ -27,9 +27,28 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        
 
-        return redirect()->intended(route('dashboard', absolute: false));
+
+        $user = Auth::user();
+        $role = strtolower($user->role->libelle);
+
+        switch ($role) {
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+            case 'coordinateur':
+                return redirect()->route('coordinateur.dashboard');
+            case 'professeur':
+                return redirect()->route('professeur.dashboard');
+            case 'etudiant':
+                return redirect()->route('etudiant.dashboard');
+            case 'parent':
+                return redirect()->route('parent.dashboard');
+            default:
+                Auth::logout(); 
+                return redirect('/')->withErrors([
+                    'identifiant' => 'Rôle utilisateur inconnu. Veuillez contacter l\'administrateur.',
+                ]);
+        }
     }
 
     /**

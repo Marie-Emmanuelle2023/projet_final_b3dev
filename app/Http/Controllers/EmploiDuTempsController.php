@@ -6,17 +6,56 @@ use Illuminate\Http\Request;
 use App\Models\Classe;
 use App\Models\EmploiDuTemps;
 use App\Models\Seance;
+use Illuminate\Support\Facades\Auth;
 
 class EmploiDuTempsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $emplois = EmploiDuTemps::with(['classe', 'seances'])->get();
+        $user = Auth::user();
+        $emplois = collect(); // valeur par défaut
+
+        if ($user->role->libelle === 'coordinateur') {
+            // Filtrage par classe (si filtre actif)
+            $classeId = $request->input('classe_id');
+
+            $query = EmploiDuTemps::with([
+                'classe',
+                'seances' => function ($q) {
+                    $q->with(['module', 'typeCours', 'professeur.user'])->orderBy('date', 'asc');
+                }
+            ]);
+
+
+            if ($classeId) {
+                $query->where('classe_id', $classeId);
+            }
+
+            $emplois = $query->get();
+            $classes = Classe::all(); // Pour le select de filtrage
+
+            return view('emploi_du_temps.index', compact('emplois', 'classes', 'classeId'));
+        } elseif ($user->role->libelle === 'professeur') {
+            // Récupérer uniquement les emplois où il y a ses séances
+            $emplois = EmploiDuTemps::whereHas('seances', function ($q) use ($user) {
+                $q->where('professeur_id', $user->id);
+            })->with(['classe', 'seances'])->get();
+        } elseif ($user->role->libelle === 'etudiant') {
+            $etudiant = $user->etudiant;
+            $emplois = EmploiDuTemps::where('classe_id', $etudiant->classe_id)
+                ->with(['classe', 'seances'])->get();
+        } elseif ($user->role->libelle === 'parent') {
+            $etudiant = $user->parentEtudiant->etudiant;
+            $emplois = EmploiDuTemps::where('classe_id', $etudiant->classe_id)
+                ->with(['classe', 'seances'])->get();
+        }
+
         return view('emploi_du_temps.index', compact('emplois'));
     }
+
 
     /**
      * Show the form for creating a new resource.

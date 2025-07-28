@@ -16,7 +16,8 @@ class Seance extends Model
         'type_cours_id',
         'classe_id',
         'emploi_du_temps_id',
-        'module_id'
+        'module_id',
+        'professeur_id',
     ];
 
     public function typeCours()
@@ -38,7 +39,12 @@ class Seance extends Model
     {
         return $this->belongsTo(Module::class);
     }
-    
+
+    public function professeur()
+    {
+        return $this->belongsTo(Professeur::class);
+    }
+
     public function presences()
     {
         return $this->hasMany(Presence::class);

@@ -18,4 +18,9 @@ class Module extends Model
     {
         return $this->hasMany(Seance::class);
     }
+
+    public function professeurs()
+    {
+        return $this->belongsToMany(Professeur::class, 'professeur_modules');
+    }
 }

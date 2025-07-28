@@ -1,6 +1,15 @@
 <x-app-layout>
 <div class="container mx-auto py-4">
     <h1 class="text-2xl font-bold mb-4">Modifier l'année académique</h1>
+    @if ($errors->any())
+        <div class="bg-red-100 text-red-800 p-2 mb-4 rounded">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <form action="{{ route('annee_academiques.update', $anneeAcademique) }}" method="POST" class="space-y-4">
         @csrf
         @method('PUT')
