@@ -62,9 +62,10 @@
                     required>
                     <option value="">Sélectionner</option>
                     @foreach ($emplois as $emploi)
-                        <option value="{{ $emploi->classe->nom }}"
+                        <option value="{{ $emploi->id }}"
                             {{ old('emploi_du_temps_id') == $emploi->id ? 'selected' : '' }}>
-                            {{ $emploi->classe->nom }}</option>
+                            {{ $emploi->classe->nom }}
+                        </option>
                     @endforeach
                 </select>
                 @error('emploi_du_temps_id')

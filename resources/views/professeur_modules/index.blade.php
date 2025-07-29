@@ -1,45 +1,51 @@
 
 <x-app-layout>
-    <div class="container py-4">
-        <h2 class="mb-4">Liste des affectations Professeur - Module</h2>
+    <div class="container mx-auto py-8">
+        <h2 class="text-2xl font-bold mb-6 text-blue-700">Liste des affectations Professeur - Module</h2>
         @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="bg-green-100 text-green-800 p-2 mb-4 rounded">{{ session('success') }}</div>
         @endif
-        <a href="{{ route('professeur_modules.create') }}" class="btn btn-success mb-3">Nouvelle affectation</a>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Professeur</th>
-                    <th>Module</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($professeurModules as $affectation)
+        <a href="{{ route('professeur_modules.create') }}" class="mb-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Nouvelle affectation</a>
+        <div class="overflow-x-auto shadow rounded-lg">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead class="bg-gray-100">
                     <tr>
-                        <td>{{ $affectation->id }}</td>
-                        <td>
-                            @php
-                                $nom = $affectation->professeur->user->nom ?? '';
-                                $prenom = $affectation->professeur->user->prenom ?? '';
-                                $nomComplet = trim($nom . ' ' . $prenom);
-                            @endphp
-                            {{ $nomComplet ?: 'Nom inconnu' }}
-                        </td>
-                        <td>{{ $affectation->module->nom ?? 'Nom inconnu' }}</td>
-                        <td>
-                            <a href="{{ route('professeur_modules.show', $affectation) }}" class="btn btn-info btn-sm">Voir</a>
-                            <a href="{{ route('professeur_modules.edit', $affectation) }}" class="btn btn-warning btn-sm">Modifier</a>
-                            <form action="{{ route('professeur_modules.destroy', $affectation) }}" method="POST" style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Confirmer la suppression ?')">Supprimer</button>
-                            </form>
-                        </td>
+                        <th class="py-2 px-4 border">ID</th>
+                        <th class="py-2 px-4 border">Professeur</th>
+                        <th class="py-2 px-4 border">Module</th>
+                        <th class="py-2 px-4 border">Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse($professeurModules as $affectation)
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-2 px-4 border">{{ $affectation->id }}</td>
+                            <td class="py-2 px-4 border">
+                                @php
+                                    $nom = $affectation->professeur->user->nom ?? '';
+                                    $prenom = $affectation->professeur->user->prenom ?? '';
+                                    $nomComplet = trim($nom . ' ' . $prenom);
+                                @endphp
+                                <span class="font-semibold text-gray-800">{{ $nomComplet ?: 'Nom inconnu' }}</span>
+                            </td>
+                            <td class="py-2 px-4 border">{{ $affectation->module->nom ?? 'Nom inconnu' }}</td>
+                            <td class="py-2 px-4 border flex gap-2">
+                                <a href="{{ route('professeur_modules.show', $affectation) }}" class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">Voir</a>
+                                <a href="{{ route('professeur_modules.edit', $affectation) }}" class="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Modifier</a>
+                                <form action="{{ route('professeur_modules.destroy', $affectation) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700" onclick="return confirm('Confirmer la suppression ?')">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="py-4 px-4 text-center text-gray-500">Aucune affectation trouvée.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </x-app-layout>

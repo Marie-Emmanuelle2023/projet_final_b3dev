@@ -14,27 +14,49 @@
 
         <form method="POST" action="{{ route('justifications.store') }}" class="space-y-4">
             @csrf
+
+            @if ($role === 'coordinateur')
+                <div>
+                    <label for="etudiant_id" class="block font-semibold">Étudiant</label>
+                    <select name="etudiant_id" id="etudiant_id" class="w-full border rounded px-3 py-2" required>
+                        <option value="">Sélectionner un étudiant</option>
+                        @foreach($etudiants as $etudiant)
+                            <option value="{{ $etudiant->id }}">
+                                {{ $etudiant->user->nom ?? '' }} {{ $etudiant->user->prenom ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+
             <div>
-                <label for="etudiant_id" class="block font-semibold">Étudiant</label>
-                <select name="etudiant_id" id="etudiant_id" class="w-full border rounded px-3 py-2" required>
-                    <option value="">Sélectionner un étudiant</option>
-                    @foreach($etudiants as $etudiant)
-                        <option value="{{ $etudiant->id }}">{{ $etudiant->user->nom ?? '' }} {{ $etudiant->user->prenom ?? '' }}</option>
+                <label for="presence_id" class="block font-semibold">Présence à justifier</label>
+                <select name="presence_id" id="presence_id" class="w-full border rounded px-3 py-2" required>
+                    <option value="">Sélectionner une absence</option>
+                    @foreach($presences as $presence)
+                        <option value="{{ $presence->id }}">
+                            {{ $presence->etudiant->user->nom ?? '' }} {{ $presence->etudiant->user->prenom ?? '' }} —
+                            {{ $presence->seance->date }} / {{ $presence->seance->module->nom ?? 'Module inconnu' }}
+                        </option>
                     @endforeach
                 </select>
             </div>
+
             <div>
                 <label for="motif" class="block font-semibold">Motif</label>
                 <input type="text" name="motif" id="motif" class="w-full border rounded px-3 py-2" required>
             </div>
+
             <div>
-                <label for="preuve" class="block font-semibold">Preuve</label>
-                <input type="text" name="preuve" id="preuve" class="w-full border rounded px-3 py-2">
+                <label for="preuve" class="block font-semibold">Preuve (PDF ou image)</label>
+                <input type="file" name="preuve" id="preuve" class="w-full border rounded px-3 py-2" accept="image/*,.pdf">
             </div>
+
             <div>
                 <label for="date" class="block font-semibold">Date</label>
                 <input type="date" name="date" id="date" class="w-full border rounded px-3 py-2" required>
             </div>
+
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Enregistrer</button>
         </form>
     </div>

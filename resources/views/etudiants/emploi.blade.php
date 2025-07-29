@@ -1,0 +1,36 @@
+<x-app-layout>
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold mb-6">Mon emploi du temps de la semaine</h1>
+
+        @if ($seances->isEmpty())
+            <p class="text-gray-600">Aucune séance prévue cette semaine.</p>
+        @else
+            <table class="w-full table-auto bg-white rounded shadow">
+                <thead>
+                    <tr class="bg-gray-100 text-left">
+                        <th class="px-4 py-2">Jour</th>
+                        <th class="px-4 py-2">Heure</th>
+                        <th class="px-4 py-2">Module</th>
+                        <th class="px-4 py-2">Type</th>
+                        <th class="px-4 py-2">Salle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($seances as $seance)
+                        <tr class="border-b">
+                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($seance->date)->locale('fr')->translatedFormat('l d/m') }}</td>
+                            <td class="px-4 py-2">{{ $seance->heure }}</td>
+                            <td class="px-4 py-2">{{ $seance->module->nom }}</td>
+                            <td class="px-4 py-2">{{ $seance->typeCours->libelle }}</td>
+                            <td class="px-4 py-2">{{ $seance->salle ?? '-' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+
+        <div class="mt-6">
+            <a href="{{ route('dashboard') }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Retour au tableau de bord</a>
+        </div>
+    </div>
+</x-app-layout>

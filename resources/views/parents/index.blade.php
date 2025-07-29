@@ -13,7 +13,7 @@
             <tbody>
                 @foreach($parentEtudiants as $parentEtudiant)
                 <tr>
-                    <td class="py-2 px-4 border">{{ $parentEtudiant->parentModel->nom ?? '' }} {{ $parentEtudiant->parentModel->prenom ?? '' }}</td>
+                    <td class="py-2 px-4 border">{{ $parentEtudiant->parentModel->user->nom ?? '' }} {{ $parentEtudiant->parentModel->user->prenom ?? '' }}</td>
                     <td class="py-2 px-4 border">{{ $parentEtudiant->etudiant->user->nom ?? '' }} {{ $parentEtudiant->etudiant->user->prenom ?? '' }}</td>
                     <td class="py-2 px-4 border flex gap-2">
                         <a href="{{ route('parents.show', $parentEtudiant) }}" class="px-2 py-1 bg-green-500 text-white rounded">Voir</a>

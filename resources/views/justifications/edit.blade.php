@@ -29,8 +29,8 @@
                 <input type="text" name="motif" id="motif" value="{{ old('motif', $justification->motif) }}" class="w-full border rounded px-3 py-2" required>
             </div>
             <div>
-                <label for="preuve" class="block font-semibold">Preuve</label>
-                <input type="text" name="preuve" id="preuve" value="{{ old('preuve', $justification->preuve) }}" class="w-full border rounded px-3 py-2">
+                <label for="preuve" class="block font-semibold">Preuve (PDF ou image)</label>
+                <input type="file" name="preuve" id="preuve" value="{{ old('preuve', $justification->preuve) }}" class="w-full border rounded px-3 py-2" accept="image/*,.pdf">
             </div>
             <div>
                 <label for="date" class="block font-semibold">Date</label>

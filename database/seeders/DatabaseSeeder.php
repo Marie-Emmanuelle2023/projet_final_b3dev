@@ -23,6 +23,10 @@ class DatabaseSeeder extends Seeder
 
         // $this->call(NiveauSeeder::class);
         // $this->call(StatutSeeder::class);
-        $this->call(TypeCoursSeeder::class);
+        // $this->call(TypeCoursSeeder::class);
+        // $this->call(EtudiantSeeder::class);
+        $this->call(ParentModelSeeder::class);
+
+
     }
 }

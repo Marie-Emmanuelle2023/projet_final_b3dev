@@ -21,8 +21,6 @@ class Professeur extends Model
 
     public function modules()
     {
-        return $this->belongsToMany(Module::class, 'professeur_modules');
+        return $this->belongsToMany(Module::class, 'professeur_modules', 'professeur_id', 'module_id');
     }
-
-    
 }

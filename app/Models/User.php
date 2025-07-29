@@ -53,4 +53,18 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function professeur()
+    {
+        return $this->hasOne(\App\Models\Professeur::class, 'user_id');
+    }
+
+    public function etudiant()
+    {
+        return $this->hasOne(\App\Models\Etudiant::class, 'user_id');
+    }
+    public function parentModel()
+    {
+        return $this->hasOne(\App\Models\ParentModel::class, 'user_id');
+    }
 }

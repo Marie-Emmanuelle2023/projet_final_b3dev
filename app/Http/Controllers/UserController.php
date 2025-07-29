@@ -76,9 +76,12 @@ class UserController extends Controller
         }
 
         $roleProfesseur = Role::where('libelle', 'professeur')->first();
-        if ($roleProfesseur && $validated['role_id'] == $roleProfesseur->id) {
-            \App\Models\Professeur::create(['user_id' => $user->id]);
+        if ($roleProfesseur && (int)$validated['role_id'] === (int)$roleProfesseur->id) {
+            if (!\App\Models\Professeur::where('user_id', $user->id)->exists()) {
+                \App\Models\Professeur::create(['user_id' => $user->id]);
+            }
         }
+
 
         if ($roleEtudiant && $validated['role_id'] == $roleEtudiant->id && $classeId) {
             \App\Models\Etudiant::create([

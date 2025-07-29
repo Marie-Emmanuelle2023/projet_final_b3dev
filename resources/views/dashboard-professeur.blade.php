@@ -1,29 +1,17 @@
 <x-app-layout>
+
+    @php
+        $seancesProchaines = $seancesProchaines ?? collect();
+    @endphp
+
+
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->
-        <aside class="w-72 bg-gray-100 border-r border-gray-300 p-6 flex flex-col space-y-6">
-            <div class="w-32 h-16 bg-[url('/images/logo-ifran.jpg')] bg-contain bg-no-repeat"></div>
-            <div class="flex items-center gap-3 p-2 rounded-full bg-indigo-900 text-white w-full max-w-xs">
-                <div class="w-6 h-6 bg-white rounded"></div>
-                <span class="font-medium text-sm"><a href="{{ route('dashboard') }}">Tableau de bord</a></span>
-            </div>
-            <nav class="flex flex-col space-y-2 mt-4">
-                @foreach ([
-        'Mes séances' => route('seances.index'),
-        'Présences' => route('presences.index'),
-        'Emploi du temps' => route('emploi_du_temps.index'),
-        'Modules' => route('modules.index'),
-    ] as $label => $url)
-                    <a href="{{ $url }}"
-                        class="block px-4 py-2 rounded bg-white shadow-sm text-gray-900 font-medium hover:bg-gray-200 transition">
-                        {{ $label }}
-                    </a>
-                @endforeach
-            </nav>
-        </aside>
+        @include('components.navbar-prof')
         <main class="flex-1 p-8">
             <header class="flex justify-between items-center mb-10">
-                <h1 class="text-4xl font-extrabold font-manrope text-black leading-tight">Bonjour à vous M(me), {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</h1>
+                <h1 class="text-4xl font-extrabold font-manrope text-black leading-tight">Bonjour à vous M(me),
+                    {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</h1>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
@@ -38,6 +26,9 @@
                 </form>
             </header>
             <section class="grid grid-cols-3 gap-8">
+                <div class=" flex items-center justify-center col-span-3 mb-2">
+                    @include('components.calendar')
+                </div>
                 <div
                     class="bg-gray-300 rounded-lg shadow-md h-32 flex flex-col items-center justify-center font-semibold text-lg text-gray-700">
                     <span class="text-3xl font-bold">{{ $seancesCount ?? '-' }}</span>
@@ -55,15 +46,20 @@
                 </div>
             </section>
             <section class="mt-10">
-                <h2 class="text-xl font-bold mb-4">Séances à venir</h2>
-                <ul class="bg-white rounded shadow divide-y">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">📅 Séances à venir</h2>
+                <ul class="bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden">
                     @forelse ($seancesProchaines as $seance)
-                        <li class="p-4">
-                            <strong>{{ $seance->module->nom ?? 'Module inconnu' }}</strong><br>
-                            {{ \Carbon\Carbon::parse($seance->date)->format('d/m/Y H:i') }} – {{ $seance->salle }}
+                        <li class="p-4 hover:bg-gray-50 transition">
+                            <div class="text-sm text-gray-600">
+                                {{ \Carbon\Carbon::parse($seance->date)->translatedFormat('l d F Y à H:i') }}
+                            </div>
+                            <div class="text-base font-semibold text-gray-800">
+                                {{ $seance->module->nom ?? 'Module inconnu' }} <span class="text-sm text-gray-500">—
+                                    {{ $seance->salle }}</span>
+                            </div>
                         </li>
                     @empty
-                        <li class="p-4 text-gray-500">Aucune séance à venir.</li>
+                        <li class="p-4 text-gray-500 text-center">Aucune séance à venir.</li>
                     @endforelse
                 </ul>
             </section>

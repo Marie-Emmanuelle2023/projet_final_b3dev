@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSeanceRequest;
-use App\Http\Requests\UpdateSeanceRequest;
 use App\Models\Seance;
 use App\Models\TypeCours;
 use App\Models\Classe;
@@ -49,22 +47,36 @@ class SeanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'date' => 'required|date',
-            'salle' => 'required|string|max:255',
-            'type_cours_id' => 'required|exists:type_cours,id',
-            'classe_id' => 'required|exists:classes,id',
-            'emploi_du_temps_id' => 'required|exists:emploi_du_temps,id',
-            'module_id' => 'required|exists:modules,id',
-            'professeur_id' => 'required|exists:professeurs,id',
-        ]);
 
-        Seance::create($validated);
+public function store(Request $request)
+{
+    // On récupère l'objet TypeCours pour en extraire son nom
+    $typeCoursId = $request->input('type_cours_id');
+    $typeCours = TypeCours::find($typeCoursId);
 
-        return redirect()->route('seances.index')->with('success', 'Séance créée avec succès.');
-    }
+    // On détermine si le professeur est requis ou pas
+    // Remplace 'nom' par 'libelle' si ta colonne s'appelle comme ça
+    $coursSansProf = ['e-learning', 'workshop'];
+    $isProfRequired = !in_array(strtolower(optional($typeCours)->nom), $coursSansProf);
+
+    // Validation des champs
+    $validated = $request->validate([
+        'date' => 'required|date',
+        'salle' => 'required|string|max:255',
+        'type_cours_id' => 'required|exists:type_cours,id',
+        'classe_id' => 'required|exists:classes,id',
+        'emploi_du_temps_id' => 'required|exists:emploi_du_temps,id',
+        'module_id' => 'required|exists:modules,id',
+        'professeur_id' => [$isProfRequired ? 'required' : 'nullable', 'exists:professeurs,id'],
+    ]);
+
+    // Création de la séance
+    Seance::create($validated);
+
+    return redirect()->route('seances.index')->with('success', 'Séance créée avec succès.');
+}
+
+
 
 
     /**

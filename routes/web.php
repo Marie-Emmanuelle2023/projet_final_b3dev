@@ -44,20 +44,10 @@ Route::middleware('auth')->group(function () {
 
 
 //Routes pour les éléments que deux ou plusieurs rôles peuvent utiliser à la fois
-Route::middleware(['auth', 'role:admin,coordinateur,professeur'])->group(function () {
+Route::middleware(['auth', 'role:admin,coordinateur'])->group(function () {
+    Route::resource('classes', ClasseController::class)->parameters(['classes' => 'classe']);
     Route::resource('modules', ModuleController::class);
 });
-//Routes réservées aux PROFESSEURS et COORDINATEURS
-Route::middleware(['auth', 'role:professeur,coordinateur'])->group(function () {
-    Route::resource('emploi_du_temps', EmploiDuTempsController::class)->parameters(['emploi_du_temps' => 'emploi_du_temp']);
-    Route::resource('seances', SeanceController::class);
-    Route::get('seances/{seance}/presences', [PresenceController::class, 'marquerPresence'])->name('presences.marquer');
-    Route::post('seances/{seance}/presences', [PresenceController::class, 'enregistrerPresence'])->name('presences.enregistrer');
-    Route::resource('presences', PresenceController::class);
-});
-
-
-
 
 //Routes réservées à  l'ADMIN
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -66,8 +56,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('professeurs', ProfesseurController::class);
     Route::resource('professeur_modules', ProfesseurModuleController::class);
     Route::resource('etudiants', EtudiantController::class);
-    Route::resource('parent', ParentModelController::class);
-    Route::resource('classes', ClasseController::class)->parameters(['classes' => 'classe']);
+    Route::resource('parent_models', ParentModelController::class);
     Route::resource('annees', AnneeController::class);
     Route::resource('annee_academiques', AnneeAcademiqueController::class);
     Route::resource('niveaux', NiveauController::class);
@@ -77,7 +66,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 // Routes réservées au COORDINATEUR
 Route::middleware(['auth', 'coordinateur'])->group(function () {
-    Route::resource('classes', ClasseController::class)->parameters(['classes' => 'classe']);
     Route::resource('emploi_du_temps', EmploiDuTempsController::class)->parameters(['emploi_du_temps' => 'emploi_du_temp']);
     Route::resource('seances', SeanceController::class);
     Route::resource('presences', PresenceController::class);
@@ -88,23 +76,40 @@ Route::middleware(['auth', 'coordinateur'])->group(function () {
 });
 
 // Routes réservées au PROFESSEUR
-Route::middleware(['auth', 'professeur'])->group(function () {
-    
+Route::middleware(['auth', 'professeur'])->prefix('professeur')->group(function () {
+
+    Route::get('emploi', [ProfesseurController::class, 'emploi'])->name('professeur.emploi');
+    Route::get('seances', [ProfesseurController::class, 'seances'])->name('professeur.seances');
+    Route::get('modules', [ProfesseurController::class, 'modules'])->name('professeur.modules');
+
+    // Routes pour marquer et enregistrer les présences (spécifiques au prof)
+    Route::get('seances/{seance}/presence', [ProfesseurController::class, 'marquerPresence'])
+        ->name('professeurs.marquer');
+    Route::post('seances/{seance}/presence', [ProfesseurController::class, 'enregistrerPresence'])
+        ->name('professeurs.enregistrer');
 });
 
-// Routes réservées à l'ETUDIANT
-Route::middleware(['auth', 'etudiant'])->group(function () {
-    // Route::resource('presences', PresenceController::class);
-    // Route::resource('justifications', JustificationAbsenceController::class);
-    // Route::resource('emploi_du_temps', EmploiDuTempsController::class);
+
+// Routes réservées à l'ÉTUDIANT
+Route::middleware(['auth', 'etudiant'])->prefix('etudiant')->group(function () {
+    Route::get('absences', [EtudiantController::class, 'absences'])->name('etudiant.absences');
+    Route::get('justifications', [EtudiantController::class, 'justifications'])->name('etudiant.justifications');
+    Route::get('emploi', [EtudiantController::class, 'emploi'])->name('etudiant.emploi');
 });
+
 
 // Routes réservées au PARENT
-Route::middleware(['auth', 'parent'])->group(function () {
-    // Route::resource('presences', PresenceController::class);
-    // Route::resource('justifications', JustificationAbsenceController::class);
-    // Route::resource('emploi_du_temps', EmploiDuTempsController::class);
+Route::middleware(['auth', 'parent'])->prefix('parent')->group(function () {
+    Route::get('enfants', [ParentModelController::class, 'enfants'])->name('parent.enfants');
+    Route::get('absences', [ParentModelController::class, 'absences'])->name('parent.absences');
+    Route::get('justifications', [ParentModelController::class, 'justifications'])->name('parent.justifications');
+    Route::get('emploi', [ParentModelController::class, 'emploi'])->name('parent.emploi');
+    Route::get('/test-parent', function () {
+    return 'Bienvenue parent 🎉';
+})->middleware(['auth', 'parent']);
+
 });
+
 
 Route::get('/test-users', function () {
     return 'Ça fonctionne 🎉';

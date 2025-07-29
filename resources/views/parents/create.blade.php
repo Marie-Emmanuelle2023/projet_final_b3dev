@@ -19,7 +19,7 @@
                 <select name="parent_model_id" id="parent_model_id" class="w-full border rounded px-3 py-2" required>
                     <option value="">Sélectionner un parent</option>
                     @foreach($parents as $parent)
-                        <option value="{{ $parent->id }}">{{ $parent->nom }} {{ $parent->prenom }}</option>
+                        <option value="{{ $parent->id }}">{{ $parent->user->nom }} {{ $parent->user->prenom }}</option>
                     @endforeach
                 </select>
             </div>

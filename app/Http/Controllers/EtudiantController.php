@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Classe;
 use App\Models\Etudiant;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class EtudiantController extends Controller
 {
@@ -82,5 +83,42 @@ class EtudiantController extends Controller
     {
         $etudiant->delete();
         return redirect()->route('etudiants.index')->with('success', 'Étudiant supprimé avec succès.');
+    }
+
+    public function absences()
+    {
+        $etudiant = Auth::user()->etudiant;
+        $absences = $etudiant->presences()
+            ->with('seance.module', 'seance.classe', 'seance.typeCours')
+            ->where('statut_id', 2)
+            ->latest()
+            ->get();
+
+        return view('etudiants.absences', compact('absences'));
+    }
+
+
+    public function justifications()
+    {
+        $etudiant = Auth::user()->etudiant;
+        $justifications = $etudiant->presences()
+            ->whereHas('justification')
+            ->with('justification', 'seance.module')
+            ->latest()
+            ->get();
+
+        return view('etudiants.justifications', compact('justifications'));
+    }
+
+    public function emploi()
+    {
+        $etudiant = Auth::user()->etudiant;
+        $seances = \App\Models\Seance::with(['module', 'typeCours'])
+            ->where('classe_id', $etudiant->classe_id)
+            ->whereBetween('date', [now()->startOfWeek(), now()->endOfWeek()])
+            ->orderBy('date')
+            ->get();
+
+        return view('etudiants.emploi', compact('seances'));
     }
 }
