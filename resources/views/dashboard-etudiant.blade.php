@@ -4,7 +4,7 @@
        @include('components.navbar-etudiant')
         <main class="flex-1 p-8">
             <header class="flex justify-between items-center mb-10">
-                <h1 class="text-4xl font-extrabold font-manrope text-black leading-tight">Bonjour, Étudiant</h1>
+                <h1 class="text-4xl font-extrabold font-manrope text-black leading-tight">Bonjour, Étudiant {{ auth()->user()->prenom }} {{ auth()->user()->nom }}</h1>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
@@ -22,11 +22,11 @@
                 <div class=" flex items-center justify-center col-span-3 mb-2">
                     @include('components.calendar')
                 </div>
-                <div class="bg-gray-300 rounded-lg shadow-md h-32 flex flex-col items-center justify-center font-semibold text-lg text-gray-700">
+                <div class="bg-gray-300 rounded-lg shadow-md h-32 mt-10 flex flex-col items-center justify-center font-semibold text-lg text-gray-700">
                     <span class="text-3xl font-bold">{{ $absencesCount ?? '-' }}</span>
                     <span>Absences enregistrées</span>
                 </div>
-                <div class="bg-gray-300 rounded-lg shadow-md h-32 flex flex-col items-center justify-center font-semibold text-lg text-gray-700">
+                <div class="bg-gray-300 rounded-lg shadow-md h-32 mt-10 flex flex-col items-center justify-center font-semibold text-lg text-gray-700">
                     <span class="text-3xl font-bold">{{ $justificationsCount ?? '-' }}</span>
                     <span>Justifications envoyées</span>
                 </div>

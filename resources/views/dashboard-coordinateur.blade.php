@@ -1,10 +1,11 @@
 <x-app-layout>
- <div class="flex min-h-screen bg-gray-100">
+    <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->
-       @include('components.navbar-coordi')
+        @include('components.navbar-coordi')
         <main class="flex-1 p-8">
             <header class="flex justify-between items-center mb-10">
-                <h1 class="text-4xl font-extrabold font-manrope text-black leading-tight">Bonjour, Coordinateur</h1>
+                <h1 class="text-4xl font-extrabold font-manrope text-black leading-tight">Bonjour Coordinateur,
+                    {{ Auth::user()->prenom }} {{ Auth::user()->nom }}</h1>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"

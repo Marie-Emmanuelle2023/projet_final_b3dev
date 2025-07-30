@@ -37,6 +37,7 @@
                 <input type="date" name="date" id="date" value="{{ old('date', $justification->date) }}" class="w-full border rounded px-3 py-2" required>
             </div>
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Mettre à jour</button>
+            <a href="{{ route('justifications.index') }}" class="inline-block ml-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Annuler</a>
         </form>
     </div>
 </x-app-layout>

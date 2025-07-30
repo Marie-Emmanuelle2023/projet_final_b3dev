@@ -43,6 +43,7 @@
                 </select>
             </div>
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Mettre à jour</button>
+            <a href="{{ route('presences.index') }}" class="inline-block px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Annuler</a>
         </form>
     </div>
 </x-app-layout>

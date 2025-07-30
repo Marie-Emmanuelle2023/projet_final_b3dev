@@ -101,7 +101,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Enregistrer</button>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Mettre à jour</button>
             <a href="{{ route('seances.index') }}" class="ml-2 text-gray-600">Annuler</a>
         </form>
     </div>

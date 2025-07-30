@@ -58,6 +58,7 @@
             </div>
 
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Enregistrer</button>
+            <a href="{{ route('justifications.index') }}" class="inline-block ml-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Annuler</a>
         </form>
     </div>
 </x-app-layout>

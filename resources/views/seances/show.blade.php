@@ -22,7 +22,7 @@
         <div class="mb-4">
             <span class="font-bold">Professeur :</span> {{ $seance->professeur->user->nom ?? '-' }} {{ $seance->professeur->user->prenom ?? '-' }}
         </div>
-        <a href="{{ route('seances.edit', $seance) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Modifier</a>
         <a href="{{ route('seances.index') }}" class="ml-2 text-gray-600">Retour</a>
+        <a href="{{ route('seances.edit', $seance) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Modifier</a>
     </div>
 </x-app-layout>

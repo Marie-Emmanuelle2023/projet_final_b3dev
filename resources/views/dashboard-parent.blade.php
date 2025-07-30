@@ -4,7 +4,7 @@
         @include('components.navbar-parent')
         <main class="flex-1 p-8">
             <header class="flex justify-between items-center mb-10">
-                <h1 class="text-4xl font-extrabold font-manrope text-black leading-tight">Bonjour, {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</h1>
+                <h1 class="text-4xl font-extrabold font-manrope text-black leading-tight">Bonjour M(me), {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</h1>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
