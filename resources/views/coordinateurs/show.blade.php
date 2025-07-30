@@ -1,3 +1,4 @@
+{{-- Vue : Détail d'un coordinateur (infos, niveaux liés, actions) --}}
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-4">Détail du coordinateur</h1>

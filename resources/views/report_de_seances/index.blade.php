@@ -1,3 +1,4 @@
+{{-- Vue : Liste des reports de séance (affiche, actions, modale suppression) --}}
 <x-app-layout>
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->

@@ -12,6 +12,7 @@ class PresenceController extends Controller
 {
 
 
+    // Affiche le formulaire pour marquer la présence des étudiants à une séance
     public function marquerPresence(Seance $seance)
     {
         $etudiants = $seance->classe->etudiants;
@@ -20,6 +21,7 @@ class PresenceController extends Controller
         return view('presences.marquer', compact('seance', 'etudiants', 'statuts'));
     }
 
+    // Enregistre les présences des étudiants pour une séance
     public function enregistrerPresence(Request $request, Seance $seance)
     {
         $request->validate([
@@ -41,6 +43,7 @@ class PresenceController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // Affiche la liste de toutes les présences enregistrées
     public function index()
     {
         $presences = Presence::with(['etudiant.user', 'seance', 'statut'])->get();
@@ -50,6 +53,7 @@ class PresenceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    // Affiche le formulaire pour créer une nouvelle présence manuellement
     public function create()
     {
         $etudiants = Etudiant::with('user')->get();
@@ -61,6 +65,7 @@ class PresenceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // Enregistre une nouvelle présence créée manuellement
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -75,6 +80,7 @@ class PresenceController extends Controller
     /**
      * Display the specified resource.
      */
+    // Affiche le détail d'une présence
     public function show(Presence $presence)
     {
         $presence->load(['etudiant.user', 'seance', 'statut']);
@@ -84,6 +90,7 @@ class PresenceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    // Affiche le formulaire pour modifier une présence
     public function edit(Presence $presence)
     {
         $etudiants = Etudiant::with('user')->get();
@@ -95,6 +102,7 @@ class PresenceController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    // Met à jour une présence modifiée
     public function update(Request $request, Presence $presence)
     {
         $validated = $request->validate([
@@ -109,12 +117,14 @@ class PresenceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    // Supprime une présence
     public function destroy(Presence $presence)
     {
         $presence->delete();
         return redirect()->route('presences.index')->with('success', 'Présence supprimée avec succès.');
     }
 
+    // Vérifie si un étudiant doit être droppé d'un module (trop d'absences)
     public function verifierDrop($etudiantId, $moduleId)
     {
         $taux = $this->calculTauxPresenceModule($etudiantId, $moduleId);
@@ -124,6 +134,7 @@ class PresenceController extends Controller
         }
     }
 
+    // Calcule le taux de présence d'un étudiant pour un module
     private function calculTauxPresenceModule($etudiantId, $moduleId)
     {
         $total = Seance::where('module_id', $moduleId)->count();

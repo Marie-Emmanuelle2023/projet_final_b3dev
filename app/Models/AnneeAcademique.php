@@ -14,9 +14,6 @@ class AnneeAcademique extends Model
         'nom',
         'annee_id',
         'classe_id',
-        'debut',
-        'fin',
-        'en_cours',
     ];
 
     public function annee()

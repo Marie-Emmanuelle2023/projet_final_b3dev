@@ -1,3 +1,4 @@
+{{-- Vue : Formulaire pour ajouter un parent (sélection d'un utilisateur) --}}
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6">Ajouter un parent</h1>
@@ -27,3 +28,4 @@
         </form>
     </div>
 </x-app-layout>
+

@@ -1,3 +1,4 @@
+{{-- Vue : Détail d'un parent (affiche nom et prénom) --}}
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6">Détail du parent</h1>

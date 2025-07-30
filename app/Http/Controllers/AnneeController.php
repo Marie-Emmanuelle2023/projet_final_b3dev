@@ -31,6 +31,9 @@ class AnneeController extends Controller
     {
         $validated = $request->validate([
             'nom' => 'required|string|unique:annees',
+            'debut' => 'required|date',
+            'fin' => 'required|date|after:debut',
+            'en_cours' => 'nullable|boolean',
         ]);
         Annee::create($validated);
         return redirect()->route('annees.index')->with('success', 'Année ajoutée avec succès.');
@@ -59,6 +62,9 @@ class AnneeController extends Controller
     {
         $validated = $request->validate([
             'nom' => 'required|string|unique:annees,nom,' . $annee->id,
+            'debut' => 'required|date',
+            'fin' => 'required|date|after:debut',
+            'en_cours' => 'nullable|boolean',
         ]);
         $annee->update($validated);
         return redirect()->route('annees.index')->with('success', 'Année modifiée avec succès.');

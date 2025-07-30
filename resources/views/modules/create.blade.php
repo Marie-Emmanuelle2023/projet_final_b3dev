@@ -1,3 +1,4 @@
+{{-- Vue : Formulaire pour ajouter un module (nom du module) --}}
 <x-app-layout>
     <div class="max-w-md mx-auto mt-10 bg-white p-8 rounded shadow">
         <h2 class="text-2xl font-semibold mb-6">Ajouter un module</h2>

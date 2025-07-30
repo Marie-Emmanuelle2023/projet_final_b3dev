@@ -1,3 +1,4 @@
+{{-- Vue : Formulaire pour ajouter un coordinateur (sélection utilisateur et niveaux) --}}
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-4">Ajouter un coordinateur</h1>

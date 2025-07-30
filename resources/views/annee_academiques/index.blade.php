@@ -16,9 +16,6 @@
                             <th class="py-2 px-4 border">Nom</th>
                             <th class="py-2 px-4 border">Année</th>
                             <th class="py-2 px-4 border">Classe</th>
-                            <th class="py-2 px-4 border">Début</th>
-                            <th class="py-2 px-4 border">Fin</th>
-                            <th class="py-2 px-4 border">En cours</th>
                             <th class="py-2 px-4 border">Actions</th>
                         </tr>
                     </thead>
@@ -28,15 +25,6 @@
                                 <td class="py-2 px-4 border">{{ $aa->nom }}</td>
                                 <td class="py-2 px-4 border">{{ $aa->annee->nom ?? '' }}</td>
                                 <td class="py-2 px-4 border">{{ $aa->classe->nom ?? '' }}</td>
-                                <td class="py-2 px-4 border">{{ $aa->debut }}</td>
-                                <td class="py-2 px-4 border">{{ $aa->fin }}</td>
-                                <td class="py-2 px-4 border">
-                                    @if ($aa->en_cours)
-                                        <span class="text-green-600 font-bold">Oui</span>
-                                    @else
-                                        Non
-                                    @endif
-                                </td>
                                 <td class="py-2 px-4 border flex gap-2">
                                     <a href="{{ route('annee_academiques.edit', $aa) }}"
                                         class="bg-yellow-400 text-white px-2 py-1 rounded">Modifier</a>

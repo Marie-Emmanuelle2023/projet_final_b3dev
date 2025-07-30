@@ -1,3 +1,4 @@
+{{-- Vue : Formulaire pour modifier un report de séance (changer séances ou date) --}}
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6">Modifier le report de séance</h1>

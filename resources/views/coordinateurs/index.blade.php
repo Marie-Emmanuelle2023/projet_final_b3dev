@@ -1,3 +1,4 @@
+{{-- Vue : Liste des coordinateurs (infos, niveaux, actions) --}}
 <x-app-layout>
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->

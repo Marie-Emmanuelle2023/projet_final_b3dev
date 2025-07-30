@@ -1,3 +1,4 @@
+{{-- Dashboard principal de l'administrateur : affiche les stats globales et accès rapides --}}
 <x-app-layout>
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->

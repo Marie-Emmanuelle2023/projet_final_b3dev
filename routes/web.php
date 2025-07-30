@@ -22,11 +22,15 @@ use App\Http\Controllers\ParentEtudiantController;
 use App\Http\Controllers\ParentModelController;
 use App\Http\Controllers\StatistiquesController;
 use Illuminate\Support\Facades\Route;
+// Fichier de routes principal de l'application
+// Ici on définit toutes les URL accessibles et à quel contrôleur elles sont reliées
+// Les groupes middleware permettent de réserver l'accès à certains rôles (admin, coordinateur, etc.)
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Dashboards selon le rôle connecté
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', fn() => view('dashboard-admin'))->name('admin.dashboard');
@@ -37,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
+// Groupe de routes accessibles uniquement aux utilisateurs connectés
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -44,13 +49,13 @@ Route::middleware('auth')->group(function () {
 });
 
 
-//Routes pour les éléments que deux ou plusieurs rôles peuvent utiliser à la fois
+// Routes partagées entre plusieurs rôles (ex : admin et coordinateur)
 Route::middleware(['auth', 'role:admin,coordinateur'])->group(function () {
     Route::resource('classes', ClasseController::class)->parameters(['classes' => 'classe']);
     Route::resource('modules', ModuleController::class);
 });
 
-//Routes réservées à  l'ADMIN
+// Routes réservées à l'administrateur uniquement
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('coordinateurs', CoordinateurController::class);
@@ -63,6 +68,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('niveaux', NiveauController::class);
     Route::resource('type_cours', TypeCoursController::class);
     Route::resource('parents', ParentEtudiantController::class);
+    Route::resource('coordinateur_niveau', App\Http\Controllers\CoordinateurNiveauController::class);
 });
 
 // Routes réservées au COORDINATEUR
@@ -104,7 +110,7 @@ Route::middleware(['auth', 'professeur'])->prefix('professeur')->group(function 
 });
 
 
-// Routes réservées à l'ÉTUDIANT
+// Routes réservées à l'ÉTUDIANT : accès à ses absences, justifications et emploi du temps
 Route::middleware(['auth', 'etudiant'])->prefix('etudiant')->group(function () {
     Route::get('absences', [EtudiantController::class, 'absences'])->name('etudiant.absences');
     Route::get('justifications', [EtudiantController::class, 'justifications'])->name('etudiant.justifications');
@@ -112,7 +118,7 @@ Route::middleware(['auth', 'etudiant'])->prefix('etudiant')->group(function () {
 });
 
 
-// Routes réservées au PARENT
+// Routes réservées au PARENT : accès aux infos de ses enfants, absences, justifications, emploi du temps
 Route::middleware(['auth', 'parent'])->prefix('parent')->group(function () {
     Route::get('enfants', [ParentModelController::class, 'enfants'])->name('parent.enfants');
     Route::get('absences', [ParentModelController::class, 'absences'])->name('parent.absences');
@@ -124,6 +130,7 @@ Route::middleware(['auth', 'parent'])->prefix('parent')->group(function () {
 });
 
 
+// Route de test pour vérifier que les users sont bien connectés
 Route::get('/test-users', function () {
     return 'Ça fonctionne 🎉';
 });

@@ -16,6 +16,7 @@
         'Niveaux' => route('niveaux.index'),
         'Modules' => route('modules.index'),
         'Affectations Modules' => route('professeur_modules.index'),
+        'Affectations Coordinateur à Niveau' => route('coordinateur_niveau.index'),
         'Types de cours' => route('type_cours.index'),
         'Liens Parents-Étudiants' => route('parents.index'),
     ] as $label => $url)

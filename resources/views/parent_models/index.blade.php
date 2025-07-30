@@ -1,3 +1,5 @@
+{{-- Vue : Liste des parents --}}
+{{-- Affiche tous les parents, actions voir/modifier/supprimer, modale de suppression --}}
 <x-app-layout>
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->

@@ -14,6 +14,9 @@
                     <thead>
                         <tr>
                             <th class="py-2 px-4 border">Nom</th>
+                            <th class="py-2 px-4 border">Début</th>
+                            <th class="py-2 px-4 border">Fin</th>
+                            <th class="py-2 px-4 border">En cours</th>
                             <th class="py-2 px-4 border">Actions</th>
                         </tr>
                     </thead>
@@ -21,6 +24,15 @@
                         @foreach ($annees as $annee)
                             <tr>
                                 <td class="py-2 px-4 border">{{ $annee->nom }}</td>
+                                <td class="py-2 px-4 border">{{ $annee->debut }}</td>
+                                <td class="py-2 px-4 border">{{ $annee->fin }}</td>
+                                <td class="py-2 px-4 border">
+                                    @if ($annee->en_cours)
+                                        <span class="text-green-600 font-bold">Oui</span>
+                                    @else
+                                        Non
+                                    @endif
+                                </td>
                                 <td class="py-2 px-4 border flex gap-2">
                                     <a href="{{ route('annees.edit', $annee) }}"
                                         class="bg-yellow-400 text-white px-2 py-1 rounded">Modifier</a>

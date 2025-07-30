@@ -1,3 +1,4 @@
+{{-- Vue : Formulaire pour modifier un coordinateur (changer utilisateur ou niveaux) --}}
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-4">Modifier le coordinateur</h1>

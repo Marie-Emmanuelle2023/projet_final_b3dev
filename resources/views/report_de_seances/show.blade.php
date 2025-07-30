@@ -1,4 +1,5 @@
 
+{{-- Vue : Détail d'un report de séance (affiche les séances concernées et la date) --}}
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6">Détail du report de séance</h1>

@@ -1,3 +1,5 @@
+{{-- Dashboard du coordinateur : stats, calendrier, accès rapide --}}
+{{-- Sidebar à gauche, stats en haut, calendrier au centre --}}
 <x-app-layout>
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->

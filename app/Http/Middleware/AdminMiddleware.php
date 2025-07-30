@@ -1,4 +1,6 @@
 <?php
+// Middleware qui bloque l'accès aux pages réservées à l'administrateur
+// Si l'utilisateur n'est pas admin, il reçoit une erreur 403
 
 namespace App\Http\Middleware;
 

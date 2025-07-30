@@ -1,3 +1,4 @@
+{{-- Vue : Liste des séances (date, cours, prof, type, classe, emploi du temps, salle, actions) --}}
 <x-app-layout>
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->

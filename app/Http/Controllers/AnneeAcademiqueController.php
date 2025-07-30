@@ -37,9 +37,6 @@ class AnneeAcademiqueController extends Controller
             'nom' => 'required|string',
             'annee_id' => 'required|exists:annees,id',
             'classe_id' => 'required|exists:classes,id',
-            'debut' => 'required|date',
-            'fin' => 'required|date|after:debut',
-            'en_cours' => 'nullable|boolean',
         ]);
 
         if ($request->en_cours) {
@@ -77,9 +74,6 @@ class AnneeAcademiqueController extends Controller
             'nom' => 'required|string',
             'annee_id' => 'required|exists:annees,id',
             'classe_id' => 'required|exists:classes,id',
-            'debut' => 'required|date',
-            'fin' => 'required|date|after:debut',
-            'en_cours' => 'nullable|boolean',
         ]);
 
         if ($request->en_cours) {

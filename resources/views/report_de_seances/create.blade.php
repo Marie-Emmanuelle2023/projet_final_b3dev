@@ -1,3 +1,4 @@
+{{-- Vue : Formulaire pour ajouter un report de séance (choix séances et date) --}}
 <x-app-layout>
     <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6">Ajouter un report de séance</h1>

@@ -12,6 +12,9 @@ class Annee extends Model
 
     protected $fillable = [
         'nom',
+        'debut',
+        'fin',
+        'en_cours',
     ];
     public function classes()
     {

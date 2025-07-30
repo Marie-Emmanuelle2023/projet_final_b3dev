@@ -1,3 +1,7 @@
+{{--
+    Vue : Détail d'une séance
+    Cette page affiche toutes les informations d'une séance (date, salle, type, classe, module, professeur).
+--}}
 <x-app-layout>
     <div class="max-w-md mx-auto mt-10 bg-white p-8 rounded shadow">
         <h2 class="text-2xl font-semibold mb-6">Détail de la séance</h2>
