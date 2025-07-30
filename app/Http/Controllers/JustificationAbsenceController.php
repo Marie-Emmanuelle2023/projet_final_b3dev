@@ -25,7 +25,9 @@ class JustificationAbsenceController extends Controller
         $etudiants = [];
 
         if ($role === 'coordinateur') {
-            $etudiants = Etudiant::with('user')->get();
+            $etudiants = Etudiant::whereHas('presences', function ($q) {
+                $q->where('statut_id', 2); // 2 = absent
+            })->with('user')->get();
         }
 
         return view('justifications.create', compact('etudiants', 'presences', 'role'));
@@ -58,11 +60,11 @@ class JustificationAbsenceController extends Controller
         }
 
         if ($request->hasFile('preuve')) {
-        $file = $request->file('preuve');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('preuves'), $filename);
-        $validated['preuve'] = 'preuves/' . $filename;
-    }
+            $file = $request->file('preuve');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('preuves'), $filename);
+            $validated['preuve'] = 'preuves/' . $filename;
+        }
 
         JustificationAbsence::create($validated);
 

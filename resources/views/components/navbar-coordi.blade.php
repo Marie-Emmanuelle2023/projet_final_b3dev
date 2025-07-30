@@ -12,7 +12,7 @@
         'Présences' => route('presences.index'),
         'Reports de séances' => route('report_de_seances.index'),
         'Justifications' => route('justifications.index'),
-        'Statistiques' => '#',
+        'Statistiques' => route('statistiques.index'),
     ] as $label => $url)
                     <a href="{{ $url }}"
                         class="block px-4 py-2 rounded bg-white shadow-sm text-gray-900 font-medium hover:bg-gray-200 transition">

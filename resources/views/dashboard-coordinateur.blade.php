@@ -53,7 +53,46 @@
                     <span class="text-3xl font-bold">{{ $seancesThisWeekCount ?? '-' }}</span>
                     <span>Séances cette semaine</span>
                 </div>
+
+            </section>
+            <section class="mt-16">
+                 <!-- Graphe 2 : Taux de présence par classe -->
+                <div class="mb-10">
+                    <h2 class="text-xl font-semibold mb-4">Taux de présence par classe</h2>
+                    <canvas id="classesChart" height="100"></canvas>
+                </div>
             </section>
         </main>
     </div>
+
+    <script>
+        // Graphe 2 : Taux de présence par classe
+        fetch("{{ route('statistiques.classes') }}")
+            .then(res => res.json())
+            .then(data => {
+                const ctx = document.getElementById('classesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.map(d => d.classe),
+                        datasets: [{
+                            label: 'Taux (%)',
+                            data: data.map(d => d.taux),
+                            backgroundColor: '#3490dc'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
 </x-app-layout>

@@ -20,6 +20,7 @@ use App\Http\Controllers\ReportDeSeanceController;
 use App\Http\Controllers\JustificationAbsenceController;
 use App\Http\Controllers\ParentEtudiantController;
 use App\Http\Controllers\ParentModelController;
+use App\Http\Controllers\StatistiquesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -75,6 +76,19 @@ Route::middleware(['auth', 'coordinateur'])->group(function () {
     Route::resource('justifications', JustificationAbsenceController::class);
 });
 
+Route::middleware(['auth', 'coordinateur'])->group(function () {
+    Route::get('/statistiques/etudiants', [StatistiquesController::class, 'tauxPresenceEtudiants'])->name('statistiques.etudiants');
+    Route::get('/statistiques/classes', [StatistiquesController::class, 'tauxPresenceParClasse'])->name('statistiques.classes');
+    Route::get('/statistiques/niveaux', [StatistiquesController::class, 'tauxPresenceParNiveau'])->name('statistiques.niveaux');
+    Route::get('/statistiques/volume-type', [StatistiquesController::class, 'volumeCoursParType'])->name('statistiques.volumeType');
+    Route::get('/statistiques/volume-cumul', [StatistiquesController::class, 'volumeCumulParTrimestreEtNiveau'])->name('statistiques.volumeCumul');
+    Route::get('/etudiants-droppes', [StatistiquesController::class, 'listeEtudiantsDroppés']);
+    Route::get('/statistiques', function () {
+        return view('statistiques');
+    })->name('statistiques.index');
+});
+
+
 // Routes réservées au PROFESSEUR
 Route::middleware(['auth', 'professeur'])->prefix('professeur')->group(function () {
 
@@ -105,9 +119,8 @@ Route::middleware(['auth', 'parent'])->prefix('parent')->group(function () {
     Route::get('justifications', [ParentModelController::class, 'justifications'])->name('parent.justifications');
     Route::get('emploi', [ParentModelController::class, 'emploi'])->name('parent.emploi');
     Route::get('/test-parent', function () {
-    return 'Bienvenue parent 🎉';
-})->middleware(['auth', 'parent']);
-
+        return 'Bienvenue parent 🎉';
+    })->middleware(['auth', 'parent']);
 });
 
 

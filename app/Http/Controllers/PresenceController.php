@@ -114,4 +114,24 @@ class PresenceController extends Controller
         $presence->delete();
         return redirect()->route('presences.index')->with('success', 'Présence supprimée avec succès.');
     }
+
+    public function verifierDrop($etudiantId, $moduleId)
+    {
+        $taux = $this->calculTauxPresenceModule($etudiantId, $moduleId);
+
+        if ($taux < 30) {
+            // Enregistrer comme droppé, envoyer notification, etc.
+        }
+    }
+
+    private function calculTauxPresenceModule($etudiantId, $moduleId)
+    {
+        $total = Seance::where('module_id', $moduleId)->count();
+        $present = Presence::where('etudiant_id', $etudiantId)
+            ->whereHas('seance', fn($q) => $q->where('module_id', $moduleId))
+            ->where('statut_id', 1)
+            ->count();
+
+        return $total === 0 ? 0 : round(($present / $total) * 100, 2);
+    }
 }
